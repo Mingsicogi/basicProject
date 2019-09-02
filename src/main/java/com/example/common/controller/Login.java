@@ -35,9 +35,9 @@ public class Login {
 	@GetMapping("/login")
 	public String loginPage(Model model){
 
-		String loginRedirectUrl = lineMeUrlFormat;
-
-		loginRedirectUrl = String.format(loginRedirectUrl, lineChanelId, domain + ":" + port + "/v1/basic/welcome", Math.random());
+//		String loginRedirectUrl = lineMeUrlFormat;
+//
+//		loginRedirectUrl = String.format(loginRedirectUrl, lineChanelId, domain + ":" + port + "/v1/basic/welcome", Math.random());
 
 		return "redirect:" + loginRedirectUrl;
 	}
