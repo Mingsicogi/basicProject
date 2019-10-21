@@ -23,7 +23,7 @@ spring:
 
   # Redis config
   redis:
-    host: 127.0.0.1
+    host: mins-redis.2dyjoo.ng.0001.apn2.cache.amazonaws.com
     port: 6379
     database: 1
     lettuce:
@@ -39,7 +39,14 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
+  # MongoDB
+  data:
+    mongodb:
+      host: docdb-2019-10-20-11-14-37.cpfhuqglxhri.ap-northeast-2.docdb.amazonaws.com
+      port: 27017
+      username: minsMongoDB2
+      password: test1234
+      database: admin
 
 server:
-
   port: 18080
