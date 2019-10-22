@@ -39,14 +39,14 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
-  # MongoDB
-  data:
-    mongodb:
-      host: docdb-2019-10-20-11-14-37.cpfhuqglxhri.ap-northeast-2.docdb.amazonaws.com
-      port: 27017
-      username: minsMongoDB2
-      password: test1234
-      database: admin
+#  # MongoDB
+#  data:
+#    mongodb:
+#      host: docdb-2019-10-20-11-14-37.cpfhuqglxhri.ap-northeast-2.docdb.amazonaws.com
+#      port: 27017
+#      username: minsMongoDB2
+#      password: test1234
+#      database: admin
 
 server:
   port: 18080
