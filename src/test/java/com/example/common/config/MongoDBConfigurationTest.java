@@ -2,18 +2,21 @@ package com.example.common.config;
 
 import com.example.common.service.repository.PersonMongoRepository;
 import com.example.common.vo.Person;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+import com.mongodb.client.result.DeleteResult;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -21,84 +24,41 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class MongoDBConfigurationTest {
 
     @Autowired
-    private MongoClient mongoClient;
-
-    @Autowired
-    private PersonMongoRepository personMongoRepository;
-
-
-    @Autowired
-    private MongoDBConfiguration mongoDBConfiguration;
+    private MongoTemplate minsDBTemplate;
 
     @Test
     public void a_커넥션_확인(){
-//        String template = "mongodb://%s:%s@%s/?ssl=true&replicaSet=rs0&readpreference=%s";
-//        String username = "minsMongoDB2";
-//        String password = "test1234";
-//        String clusterEndpoint = "docdb-2019-10-20-11-14-37.cluster-cpfhuqglxhri.ap-northeast-2.docdb.amazonaws.com";
-//        String readPreference = "secondaryPreferred";
-//        String connectionString = String.format(template, username, password, clusterEndpoint, readPreference);
-//
-//        String keystore = "rds-ca-certs";
-//        String keystorePassword = "mins1234";
-//
-//        System.setProperty("javax.net.ssl.trustStore", keystore);
-//        System.setProperty("javax.net.ssl.trustStorePassword", keystorePassword);
-//
-//        MongoClientURI clientURI = new MongoClientURI(connectionString);
-//        MongoClient mongoClient = new MongoClient(clientURI);
-//
-//        MongoDatabase testDB = mongoClient.getDatabase("admin");
-//        MongoCollection<Document> numbersCollection = testDB.getCollection("test");
-//
-//        Document doc = new Document("name", "pi").append("value", 3.14159);
-//        numbersCollection.insertOne(doc);
-//
-//        MongoCursor<Document> cursor = numbersCollection.find().iterator();
-//        try {
-//            while (cursor.hasNext()) {
-//                System.out.println(cursor.next().toJson());
-//            }
-//        } finally {
-//            cursor.close();
-//        }
-
-        MongoDatabase testDB = mongoDBConfiguration.mongoClient().getDatabase("admin");
-        MongoCollection<Document> numbersCollection = testDB.getCollection("test");
-
-        Document doc = new Document("name", "pi").append("value", 3.14159);
-        numbersCollection.insertOne(doc);
-
-        MongoCursor<Document> cursor = numbersCollection.find().iterator();
-        try {
-            while (cursor.hasNext()) {
-                System.out.println(cursor.next().toJson());
-            }
-        } finally {
-            cursor.close();
-        }
+        Assert.assertTrue(minsDBTemplate.collectionExists("test"));
     }
 
     @Test
     public void b_데이터_삽입(){
-//        MongoDatabase database = mongoClient.getDatabase("admin");
-//        MongoCollection mongoCollection = database.getCollection("test");
-
-        personMongoRepository.insert(Person.builder().id(1).name("minssogi").age(29).build());
+        minsDBTemplate.insert(Person.builder().id(UUID.randomUUID().toString()).name("minssogi").age(20).build());
     }
 
     @Test
     public void c_데이터_수정(){
+        Person dbInfo = minsDBTemplate.findOne(Query.query(Criteria.where("name").is("minssogi")), Person.class);
 
+        dbInfo.setAge(290);
+
+        minsDBTemplate.save(dbInfo);
+
+        Person updateDbInfo = minsDBTemplate.findOne(Query.query(Criteria.where("age").is(290)), Person.class);
+        Assert.assertNotNull(updateDbInfo);
     }
 
     @Test
     public void d_데이터_조회(){
+        List<Person> dbInfo = minsDBTemplate.find(Query.query(Criteria.where("name").is("minssogi")), Person.class);
 
+        Assert.assertNotNull(dbInfo);
     }
 
     @Test
     public void e_데이터_삭제(){
+        DeleteResult result = minsDBTemplate.remove(Query.query(Criteria.where("name").is("minssogi")), Person.class);
 
+        Assert.assertTrue("Success", result.getDeletedCount() >= 1);
     }
 }

@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Builder
 public class Person {
     @Id
-    private Integer id;
+    private String id;
     private String name;
     private Integer age;
 }
