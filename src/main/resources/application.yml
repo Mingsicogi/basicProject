@@ -39,6 +39,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
+  devtools:
+    restart:
+      enabled: true
+
   # MongoDB
 #  data:
 #    mongodb:

@@ -92,6 +92,14 @@
             <version>2.9.2</version>
         </dependency>
 
+
+        <!-- dev tools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- for test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

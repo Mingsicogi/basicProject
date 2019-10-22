@@ -1,6 +1,5 @@
 package com.example.common.config;
 
-import com.example.common.service.repository.PersonMongoRepository;
 import com.example.common.vo.Person;
 import com.mongodb.client.result.DeleteResult;
 import org.junit.Assert;
